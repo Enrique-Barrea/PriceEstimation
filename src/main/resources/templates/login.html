@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="userLogin">Usuario</label>
+                    <input type="text" class="form-control" id="userLogin" placeholder="Usuario" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Contraseña</label>
+                    <input type="password" class="form-control" id="userPassword" placeholder="Contraseña" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <div id="loginError" class="text-danger mt-3" style="display:none;">Credenciales incorrectas.</div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#loginForm').submit(function(event) {
+            event.preventDefault();
+            var userLogin = $('#userLogin').val();
+            var userPassword = $('#userPassword').val();
+
+            $.ajax({
+                url: '/login',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ userLogin: userLogin, userPassword: userPassword }),
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = '/home';  // Redirect to a secure page
+                    } else {
+                        $('#loginError').show();
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
